@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شبیه‌ساز اقتصادی</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #3b31d5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .slider-group {
+            margin-bottom: 25px;
+        }
+
+        .slider-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* استایل اسلایدرها */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 10px;
+            background: #e0e0e0;
+            outline: none;
+        }
+
+        /* استایل دستگیره اسلایدر */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #3b31d5;
+            cursor: pointer;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+
+        /* رنگ‌های اختصاصی برای پر شدن اسلایدرها */
+        #dollar {
+            background: linear-gradient(to left, #007bff 0%, #e0e0e0 0%);
+        }
+        #house {
+            background: linear-gradient(to left, #ff4757 100%, #e0e0e0 100%);
+        }
+        #car {
+            background: linear-gradient(to left, #ffa502 100%, #e0e0e0 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- اسلایدر دلار -->
+        <div class="slider-group">
+            <label for="dollar">دلار</label>
+            <input type="range" id="dollar" min="0" max="100" value="0">
+        </div>
+
+        <!-- اسلایدر خونه -->
+        <div class="slider-group">
+            <label for="house">خونه</label>
+            <input type="range" id="house" min="0" max="100" value="100">
+        </div>
+
+        <!-- اسلایدر ماشین -->
+        <div class="slider-group">
+            <label for="car">ماشین</label>
+            <input type="range" id="car" min="0" max="100" value="100">
+        </div>
+    </div>
+
+    <script>
+        const dollarSlider = document.getElementById('dollar');
+        const houseSlider = document.getElementById('house');
+        const carSlider = document.getElementById('car');
+
+        // تابع برای رنگ‌آمیزی پس‌زمینه اسلایدرها بر اساس مقدارشان
+        function updateSliderBackground(slider, color) {
+            const percentage = slider.value;
+            slider.style.background = `linear-gradient(to left, ${color} ${percentage}%, #e0e0e0 ${percentage}%)`;
+        }
+
+        // مقداردهی اولیه رنگ اسلایدرها
+        updateSliderBackground(dollarSlider, '#007bff');
+        updateSliderBackground(houseSlider, '#ff4757');
+        updateSliderBackground(carSlider, '#ffa502');
+
+        // گوش دادن به تغییرات اسلایدر دلار
+        dollarSlider.addEventListener('input', function() {
+            const dollarValue = parseInt(this.value);
+            
+            // معکوس کردن مقدار خونه و ماشین بر اساس دلار
+            const inverseValue = 100 - dollarValue;
+            
+            houseSlider.value = inverseValue;
+            carSlider.value = inverseValue;
+
+            // به‌روزرسانی گرافیکی رنگ‌ها
+            updateSliderBackground(dollarSlider, '#007bff');
+            updateSliderBackground(houseSlider, '#ff4757');
+            updateSliderBackground(carSlider, '#ffa502');
+        });
+    </script>
+</body>
+</html>
